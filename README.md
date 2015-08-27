@@ -4,21 +4,21 @@
 [![Build Status](https://img.shields.io/travis/adam-paterson/oauth2-slack/master.svg?style=flat-square)](https://travis-ci.org/adam-paterson/oauth2-slack)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/adam-paterson/oauth2-slack.svg?style=flat-square)](https://scrutinizer-ci.com/g/adam-paterson/oauth2-slack/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/adam-paterson/oauth2-slack.svg?style=flat-square)](https://scrutinizer-ci.com/g/adam-paterson/oauth2-slack)
-[![Total Downloads](https://img.shields.io/packagist/dt/league/oauth2-slack.svg?style=flat-square)](https://packagist.org/packages/league/oauth2-slack)
+[![Total Downloads](https://img.shields.io/packagist/dt/league/oauth2-slack.svg?style=flat-square)](https://packagist.org/packages/adam-paterson/oauth2-slack)
 
-This package provides Instagram OAuth 2.0 support for the PHP League's [OAuth 2.0 Client](https://github.com/adam-paterson/oauth2-client).
+This package provides Slack OAuth 2.0 support for the PHP League's [OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
 ## Installation
 
 To install, use composer:
 
 ```
-composer require league/oauth2-slack
+composer require adam-paterson/oauth2-slack
 ```
 
 ## Usage
 
-Usage is the same as The League's OAuth client, using `\League\OAuth2\Client\Provider\Instagram` as the provider.
+Usage is the same as The League's OAuth client, using `\AdamPaterson\OAuth2\Client\Provider\Slack` as the provider.
 
 ### Authorization Code Flow
 
