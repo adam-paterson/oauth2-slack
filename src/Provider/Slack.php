@@ -46,7 +46,15 @@ class Slack extends AbstractProvider
      */
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
-        return "https://slack.com/api/team.info?token=".$token;
+        $authorizedUser = $this->getAuthorizedUser($token);
+
+        $url = sprintf(
+            'https://slack.com/api/users.info?token=%s&user=%s',
+            $token,
+            $authorizedUser->getId()
+        );
+
+        return $url;
     }
 
     /**
@@ -61,10 +69,7 @@ class Slack extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-        if (isset($data['ok']) && $data['ok'] == false) {
-            $error = isset($error['error']) ? $error['error']: 'Unknown error';
-            throw new IdentityProviderException($error, 400, $data);
-        }
+
     }
 
     /**
@@ -73,11 +78,11 @@ class Slack extends AbstractProvider
      * @param array $response
      * @param AccessToken $token
      *
-     * @return SlackTeamResourceOwner
+     * @return SlackResourceOwner
      */
     protected function createResourceOwner(array $response, AccessToken $token)
     {
-        return new SlackTeamResourceOwner($response, null);
+        return new SlackResourceOwner($response, null);
     }
 
     /**
@@ -86,5 +91,31 @@ class Slack extends AbstractProvider
     protected function getDefaultScopes()
     {
         return [];
+    }
+
+    public function fetchAuthorizedUserDetails(AccessToken $token)
+    {
+        $url = $this->getAuthorizedUserTestUrl($token);
+
+        $request = $this->getAuthenticatedRequest(self::METHOD_GET, $url, $token);
+
+        return $this->getResponse($request);
+    }
+
+    protected function getAuthorizedUserTestUrl($token)
+    {
+        return "https://slack.com/api/auth.test?token=".$token;
+    }
+
+    public function getAuthorizedUser($token)
+    {
+        $response = $this->fetchAuthorizedUserDetails($token);
+
+        return $this->createAuthorizedUser($response);
+    }
+
+    protected function createAuthorizedUser($response)
+    {
+        return new SlackAuthorizedUser($response, 'user_id');
     }
 }

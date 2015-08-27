@@ -47,9 +47,18 @@ class SlackTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($this->provider->getState());
     }
 
-    public function testGetAuthoriztionUrl()
+    public function testGetResourceOwnerDetailsUrl()
     {
-        $url = $this->provider->getAuthorizationUrl();
+        $token = m::mock('League\OAuth2\Client\Token\AccessToken', [['access_token' => 'mock_access_token']]);
+        $url = $this->provider->getResourceOwnerDetailsUrl($token);
+        $uri = parse_url($url);
+
+    }
+
+    public function testGetAuthorizationUrl()
+    {
+        $params = [];
+        $url = $this->provider->getAuthorizationUrl($params);
         $uri = parse_url($url);
 
         $this->assertEquals('/oauth/authorize', $uri['path']);
@@ -92,42 +101,21 @@ class SlackTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetTeamInfo()
+    public function testGetAuthorizedUserTestUrl()
     {
-        $id = rand(1000,999);
-        $name = uniqid();
-        $domain = uniqid();
-        $emailDomain = uniqid();
-        $icon = [
-            0 => uniqid(),
-            1 => uniqid(),
-        ];
+        $method = self::getMethod('getAuthorizedUserTestUrl');
+        $token = m::mock('League\OAuth2\Client\Token\AccessToken', [['access_token' => 'mock_access_token']]);
 
-        $postResponse = m::mock('Psr\Http\Message\ResponseInterface');
-        $postResponse->shouldReceive('getBody')->andReturn('{"access_token": "mock_access_token"}');
-        $postResponse->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $url = $method->invoke($this->provider, $token);
+        $uri = parse_url($url);
 
-        $teamResponse = m::mock('Psr\Http\Message\ResponseInterface');
-        $teamResponse->shouldReceive('getBody')->andReturn('{"ok":true,"team":{"id":"'.$id.'","name":"'.$name.'","domain":"'.$domain.'","email_domain":"'.$emailDomain.'","icon":{"0":"'.$icon[0].'","1":"'.$icon[1].'"}}}');
-        $teamResponse->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $this->assertEquals('/api/auth.test', $uri['path']);
 
-        $client = m::mock('GuzzleHttp\ClientInterface');
-        $client->shouldReceive('send')
-            ->times(2)
-            ->andReturn($postResponse, $teamResponse);
+    }
 
-        $this->provider->setHttpClient($client);
-        $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
-        $user = $this->provider->getResourceOwner($token);
-        $this->assertEquals($id, $user->getId());
-        $this->assertEquals($id, $user->toArray()['team']['id']);
-        $this->assertEquals($name, $user->getName());
-        $this->assertEquals($name, $user->toArray()['team']['name']);
-        $this->assertEquals($domain, $user->getDomain());
-        $this->assertEquals($domain, $user->toArray()['team']['domain']);
-        $this->assertEquals($emailDomain, $user->getEmailDomain());
-        $this->assertEquals($emailDomain, $user->toArray()['team']['email_domain']);
-        $this->assertEquals($icon, $user->getIcon());
-        $this->assertEquals($icon, $user->toArray()['team']['icon']);
+    public function testGetAuthorizedUser()
+    {
+        $token = m::mock('League\OAuth2\Client\Token\AccessToken', [['access_token' => 'mock_access_token']]);
+
     }
 }
