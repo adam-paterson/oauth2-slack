@@ -13,6 +13,8 @@ use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 class SlackResourceOwner implements ResourceOwnerInterface
 {
 
+    protected $response;
+
     public function __construct(array $response)
     {
         $this->response = $response;

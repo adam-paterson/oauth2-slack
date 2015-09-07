@@ -136,6 +136,6 @@ class Slack extends AbstractProvider
      */
     protected function createAuthorizedUser($response)
     {
-        return new SlackAuthorizedUser($response, 'user_id');
+        return new SlackAuthorizedUser($response);
     }
 }
