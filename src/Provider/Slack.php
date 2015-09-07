@@ -48,11 +48,12 @@ class Slack extends AbstractProvider
     {
         $authorizedUser = $this->getAuthorizedUser($token);
 
-        $url = sprintf(
-            'https://slack.com/api/users.info?token=%s&user=%s',
-            $token,
-            $authorizedUser->getId()
-        );
+        $params = [
+            'token' => $token->getToken(),
+            'user'  => $authorizedUser->getId()
+        ];
+
+        $url = 'https://slack.com/api/users.info?'.http_build_query($params);
 
         return $url;
     }
