@@ -58,6 +58,16 @@ class Slack extends AbstractProvider
     }
 
     /**
+     * @param $token
+     *
+     * @return string
+     */
+    public function getAuthorizedUserTestUrl($token)
+    {
+        return "https://slack.com/api/auth.test?token=".$token;
+    }
+
+    /**
      * Checks a provider response for errors.
      *
      * @throws IdentityProviderException
@@ -82,7 +92,7 @@ class Slack extends AbstractProvider
      */
     protected function createResourceOwner(array $response, AccessToken $token)
     {
-        return new SlackResourceOwner($response, null);
+        return new SlackResourceOwner($response);
     }
 
     /**
@@ -93,6 +103,11 @@ class Slack extends AbstractProvider
         return [];
     }
 
+    /**
+     * @param AccessToken $token
+     *
+     * @return mixed
+     */
     public function fetchAuthorizedUserDetails(AccessToken $token)
     {
         $url = $this->getAuthorizedUserTestUrl($token);
@@ -102,18 +117,23 @@ class Slack extends AbstractProvider
         return $this->getResponse($request);
     }
 
-    protected function getAuthorizedUserTestUrl($token)
-    {
-        return "https://slack.com/api/auth.test?token=".$token;
-    }
-
-    public function getAuthorizedUser($token)
+    /**
+     * @param AccessToken $token
+     *
+     * @return SlackAuthorizedUser
+     */
+    public function getAuthorizedUser(AccessToken $token)
     {
         $response = $this->fetchAuthorizedUserDetails($token);
 
         return $this->createAuthorizedUser($response);
     }
 
+    /**
+     * @param $response
+     *
+     * @return SlackAuthorizedUser
+     */
     protected function createAuthorizedUser($response)
     {
         return new SlackAuthorizedUser($response, 'user_id');
