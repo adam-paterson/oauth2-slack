@@ -1,6 +1,18 @@
 {
     "name": "adampaterson/oauth2-slack",
-    "description": "",
+    "description": "Slack OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+    "keywords": [
+        "oauth",
+        "oauth2",
+        "authorization",
+        "authentication",
+        "idp",
+        "identity",
+        "sso",
+        "single sign on",
+        "slack",
+        "slack api"
+    ],
     "license": "MIT",
     "authors": [
         {
