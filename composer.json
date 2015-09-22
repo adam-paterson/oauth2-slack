@@ -1,5 +1,5 @@
 {
-    "name": "adampaterson/oauth2-slack",
+    "name": "adam-paterson/oauth2-slack",
     "description": "Slack OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
     "keywords": [
         "oauth",
