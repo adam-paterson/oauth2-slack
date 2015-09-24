@@ -16,7 +16,6 @@ To install, use composer:
 ```
 composer require adam-paterson/oauth2-slack
 ```
-https://www.versioneye.com/php/adam-paterson:oauth2-imgur/1.0.0
 ## Usage
 
 Usage is the same as The League's OAuth client, using `\AdamPaterson\OAuth2\Client\Provider\Slack` as the provider.
