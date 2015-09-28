@@ -2,6 +2,7 @@
 [![Latest Version](https://img.shields.io/github/release/adam-paterson/oauth2-slack.svg?style=flat-square)](https://github.com/adam-paterson/oauth2-slack/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/adam-paterson/oauth2-slack/master.svg?style=flat-square)](https://travis-ci.org/adam-paterson/oauth2-slack)
+[![HHVM Status](https://img.shields.io/hhvm/adam-paterson/oauth2-slack.svg?style=flat-square)](http://hhvm.h4cc.de/package/adam-paterson/oauth2-slack)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/adam-paterson/oauth2-slack.svg?style=flat-square)](https://scrutinizer-ci.com/g/adam-paterson/oauth2-slack/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/adam-paterson/oauth2-slack.svg?style=flat-square)](https://scrutinizer-ci.com/g/adam-paterson/oauth2-slack)
 [![Dependency Status](https://img.shields.io/versioneye/d/php/adam-paterson:oauth2-slack/1.1.2.svg?style=flat-square)](https://www.versioneye.com/php/adam-paterson:oauth2-slack/1.1.2)
