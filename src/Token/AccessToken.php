@@ -52,17 +52,17 @@ class AccessToken implements JsonSerializable
     /**
      * @var string
      */
-    protected $team_name;    
+    protected $team_name;
 
     /**
      * @var string
      */
-    protected $team_id;    
+    protected $team_id;
 
     /**
      * @var array
      */
-    protected $incoming_webhook;    
+    protected $incoming_webhook;
     /**
      * Constructs an access token.
      *
@@ -86,7 +86,7 @@ class AccessToken implements JsonSerializable
             $this->refreshToken = $options['refresh_token'];
         }
 
-         if (!empty($options['scope'])) {
+        if (!empty($options['scope'])) {
             $this->scope = $options['scope'];
         }
 
@@ -171,7 +171,12 @@ class AccessToken implements JsonSerializable
      */
     public function getSlackWebhookInfo()
     {
-        return ['scope'=>$this->scope,'team_name'=>$this->team_name,'team_id'=>$this->team_id,'incoming_webhook'=>$this->incoming_webhook];
+        return [
+                        'scope'=>$this->scope,
+                        'team_name'=>$this->team_name,
+                        'team_id'=>$this->team_id,
+                        'incoming_webhook'=>$this->incoming_webhook
+                    ];
     }
 
     /**
