@@ -2,9 +2,9 @@
 
 namespace AdamPaterson\OAuth2\Client\Provider;
 
-use League\OAuth2\Client\Provider\AbstractProvider;
+use AdamPaterson\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use League\OAuth2\Client\Token\AccessToken;
+use AdamPaterson\OAuth2\Client\Token\AccessToken;//Custom Access Token
 use Psr\Http\Message\ResponseInterface;
 
 /**

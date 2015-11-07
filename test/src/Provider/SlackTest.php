@@ -112,7 +112,7 @@ class SlackTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAuthorizedUserTestUrl()
     {
-        $token = m::mock('League\OAuth2\Client\Token\AccessToken', [['access_token' => 'mock_access_token']]);
+        $token = m::mock('AdamPaterson\OAuth2\Client\Token\AccessToken', [['access_token' => 'mock_access_token']]);
         $token->shouldReceive('__toString')->andReturn('mock_access_token');
         $url = $this->provider->getAuthorizedUserTestUrl($token);
         $uri = parse_url($url);
