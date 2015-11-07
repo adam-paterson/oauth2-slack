@@ -54,6 +54,21 @@ if (!isset($_GET['code'])) {
         'code' => $_GET['code']
     ]);
 
+    $slackWebhookInfo = $token->getSlackWebhookInfo();
+    /*
+        {
+        "scope": "incoming-webhook,commands"
+        "team_name": "Team Installing Your Hook",
+        "incoming_webhook": {
+            "url": "https://hooks.slack.com/TXXXXX/BXXXXX/XXXXXXXXXX",
+            "channel": "#channel-it-will-post-to",
+            "configuration_url": "https://teamname.slack.com/services/BXXXXX"
+        }
+    }
+
+    */
+
+
     // Optional: Now you have a token you can look up a users profile data
     try {
 
