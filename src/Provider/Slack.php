@@ -80,7 +80,9 @@ class Slack extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-
+        $decodedData = json_decode($data);
+        if($decodedData->{'ok'} == "false")
+            throw new IdentityProviderException($decodedData->{'error'},$response->getStatusCode(),$response);
     }
 
     /**
