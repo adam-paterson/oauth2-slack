@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class Slack
+ *
  * @author Adam Paterson <hello@adampaterson.co.uk>
  *
  * @package AdamPaterson\OAuth2\Client\Provider
@@ -73,8 +74,8 @@ class Slack extends AbstractProvider
      *
      * @throws IdentityProviderException
      *
-     * @param  ResponseInterface $response
-     * @param  array|string $data Parsed response data
+     * @param ResponseInterface $response
+     * @param array|string      $data     Parsed response data
      *
      * @return void
      */
@@ -86,7 +87,7 @@ class Slack extends AbstractProvider
     /**
      * Create new resources owner using the generated access token.
      *
-     * @param array $response
+     * @param array       $response
      * @param AccessToken $token
      *
      * @return SlackResourceOwner
