@@ -81,7 +81,6 @@ class Slack extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
-
     }
 
     /**
