@@ -21,8 +21,8 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0 <7.1",
-        "league/oauth2-client": "1.*"
+        "php": ">=5.6.0",
+        "league/oauth2-client": "1.*|2.*"
     },
     "require-dev": {
         "mockery/mockery": "~0.9",
