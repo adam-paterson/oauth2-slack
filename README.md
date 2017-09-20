@@ -14,8 +14,8 @@ This package provides Slack OAuth 2.0 support for the PHP League's [OAuth 2.0 Cl
 
 To install, use composer:
 
-```
-composer require adam-paterson/oauth2-slack
+```bash
+$ composer require adam-paterson/oauth2-slack
 ```
 ## Usage
 
@@ -72,6 +72,44 @@ Usage is the same as The League's OAuth client, using `\AdamPaterson\OAuth2\Clie
         // Use this to interact with an API on the users behalf
         echo $token->getToken();
     }
+
+## Scopes
+ OAuth scopes, indicating which parts of the Slack user's account you'd like your app to be able to access. The complete list of scopes can be found [here](https://api.slack.com/docs/oauth-scopes).
+ 
+ ```php
+$provider = new \AdamPaterson\OAuth2\Client\Provider\Slack([
+    'clientId'          => '{slack-client-id}',
+    'clientSecret'      => '{slack-client-secret}',
+    'redirectUri'       => 'https://example.com/callback-url',
+]);
+    
+ $authUrl = $provider->$provider->getAuthorizationUrl([
+    'scope' => 'user:read user:write file:write'
+ ]);
+ ```
+ 
+## Bot Access Tokens
+If your Slack app includes a bot user, upon approval the JSON response will contain an additional node containing an access token to be specifically used for your bot user, within the context of the approving workspace.
+
+**Note: You must pass the `bot` scope for this additional node to be present**
+
+```php
+
+$authUrl = $provider->$provider->getAuthorizationUrl([
+    'scope' => 'bot'
+]);  
+ 
+$token = $provider->getAccessToken('authorization_code', [
+    'code' => $_GET['code']
+]);
+ 
+$values = $token->getValues();
+ 
+// bot user id
+$botUserId = $values['bot']['bot_user_id'];
+$botAccessToken = $values['bot']['bot_access_token'];
+
+```
 
 ## Testing
 

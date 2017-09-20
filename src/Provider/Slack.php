@@ -23,7 +23,7 @@ class Slack extends AbstractProvider
      */
     public function getBaseAuthorizationUrl()
     {
-        return "https://slack.com/oauth/authorize";
+        return 'https://slack.com/oauth/authorize';
     }
 
     /**
@@ -35,7 +35,7 @@ class Slack extends AbstractProvider
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return "https://slack.com/api/oauth.access";
+        return 'https://slack.com/api/oauth.access';
     }
 
     /**
@@ -54,9 +54,7 @@ class Slack extends AbstractProvider
             'user'  => $authorizedUser->getId()
         ];
 
-        $url = 'https://slack.com/api/users.info?'.http_build_query($params);
-
-        return $url;
+        return 'https://slack.com/api/users.info?'.http_build_query($params);
     }
 
     /**
@@ -66,7 +64,7 @@ class Slack extends AbstractProvider
      */
     public function getAuthorizedUserTestUrl($token)
     {
-        return "https://slack.com/api/auth.test?token=".$token;
+        return 'https://slack.com/api/auth.test?token=' . $token;
     }
 
     /**
