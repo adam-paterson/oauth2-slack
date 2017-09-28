@@ -6,6 +6,7 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
+use AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException;
 
 /**
  * Class Slack
@@ -79,6 +80,12 @@ class Slack extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
+        error_log(get_class().' :: '.__FUNCTION__);
+        error_log('data: '.var_export($data, true));
+
+        if (isset($data['ok']) && $data['ok'] == false) {
+            return SlackProviderException::fromResponse($response, $data['error']);
+        }
     }
 
     /**
