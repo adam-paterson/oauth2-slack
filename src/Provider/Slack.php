@@ -2,8 +2,8 @@
 
 namespace AdamPaterson\OAuth2\Client\Provider;
 
+use AdamPaterson\OAuth2\Client\Provider\Exception\TooManyRequestsException;
 use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
 use AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException;
@@ -74,11 +74,21 @@ class Slack extends AbstractProvider
      * @param ResponseInterface $response
      * @param array|string      $data Parsed response data
      *
-     * @return \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     * @return \AdamPaterson\OAuth2\Client\Provider\Slack
      * @throws \AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
+        $error = isset($data['ok']) && $data['ok'] === false;
+
+        if (!$error) {
+            return $this;
+        }
+
+        if ($error && $this->hasRateLimitExceeded($response)) {
+            return TooManyRequestsException::fromResponse($response, $data['error']);
+        }
+
         if (isset($data['ok']) && $data['ok'] === false) {
             return SlackProviderException::fromResponse($response, $data['error']);
         }
@@ -144,5 +154,17 @@ class Slack extends AbstractProvider
     protected function createAuthorizedUser($response)
     {
         return new SlackAuthorizedUser($response);
+    }
+
+    /**
+     * Response has Retry-After header?
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response
+     *
+     * @return bool
+     */
+    private function hasRateLimitExceeded(ResponseInterface $response)
+    {
+        return $response->hasHeader('retry-after');
     }
 }

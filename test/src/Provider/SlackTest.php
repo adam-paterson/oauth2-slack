@@ -106,8 +106,30 @@ class SlackTest extends \PHPUnit_Framework_TestCase
         $response->shouldReceive('getBody')->andReturn('{"ok": false, "error": "not_authed"}');
         $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
         $response->shouldReceive('getStatusCode')->andReturn(401);
+        $response->shouldReceive('hasHeader')->with('retry-after')->andReturn(false);
 
         $client = m::mock('GuzzleHttp\ClientInterface');
+        $client->shouldReceive('send')->once()->andReturn($response);
+
+        $this->provider->setHttpClient($client);
+
+        $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+    }
+
+    /**
+     * @expectedException \AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException
+     */
+    public function testRateLimitResponse()
+    {
+        $response = m::mock('Psr\Http\Message\ResponseInterface');
+        $response->shouldReceive('getBody')->andReturn('{"ok": false, "error": "rate_limit"}');
+        $response->shouldReceive('getHeader')->with('content-type')->andReturn(['content-type' => 'json']);
+        $response->shouldReceive('getHeader')->with('retry-after')->andReturn(30);
+        $response->shouldReceive('hasHeader')->with('retry-after')->andReturn(true);
+        $response->shouldReceive('getStatusCode')->andReturn(429);
+
+        $client = m::mock('GuzzleHttp\ClientInterface');
+
         $client->shouldReceive('send')->once()->andReturn($response);
 
         $this->provider->setHttpClient($client);
