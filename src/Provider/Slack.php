@@ -51,7 +51,6 @@ class Slack extends AbstractProvider
         $authorizedUser = $this->getAuthorizedUser($token);
 
         $params = [
-            'token' => $token->getToken(),
             'user'  => $authorizedUser->getId()
         ];
 
@@ -144,5 +143,22 @@ class Slack extends AbstractProvider
     protected function createAuthorizedUser($response)
     {
         return new SlackAuthorizedUser($response);
+    }
+
+    /**
+     * Returns the authorization headers used by Slack API.
+     *
+     * @param  mixed|null $token Either a string or an access token instance
+     * @return array
+     */
+    protected function getAuthorizationHeaders($token = null)
+    {
+        $headers = [];
+
+        if ($token) {
+            $headers['Authorization'] = 'Bearer ' . $token->getToken();
+        }
+
+        return $headers;
     }
 }
