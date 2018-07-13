@@ -62,9 +62,9 @@ class Slack extends AbstractProvider
      *
      * @return string
      */
-    public function getAuthorizedUserTestUrl($token)
+    public function getAuthorizedUserTestUrl()
     {
-        return 'https://slack.com/api/auth.test?token=' . $token;
+        return 'https://slack.com/api/auth.test';
     }
 
     /**
@@ -111,7 +111,7 @@ class Slack extends AbstractProvider
      */
     public function fetchAuthorizedUserDetails(AccessToken $token)
     {
-        $url = $this->getAuthorizedUserTestUrl($token);
+        $url = $this->getAuthorizedUserTestUrl();
 
         $request = $this->getAuthenticatedRequest(self::METHOD_GET, $url, $token);
 
@@ -153,12 +153,8 @@ class Slack extends AbstractProvider
      */
     protected function getAuthorizationHeaders($token = null)
     {
-        $headers = [];
-
-        if ($token) {
-            $headers['Authorization'] = 'Bearer ' . $token->getToken();
-        }
-
-        return $headers;
+        return [
+            'Authorization'     =>  'Bearer ' . $token->getToken()
+        ];
     }
 }
