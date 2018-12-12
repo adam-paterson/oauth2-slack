@@ -1,6 +1,7 @@
 <?php
 namespace AdamPaterson\OAuth2\Client\Test\Provider;
 
+use League\OAuth2\Client\Token\AccessToken;
 use AdamPaterson\OAuth2\Client\Provider\Slack;
 use Mockery as m;
 use ReflectionClass;
@@ -270,5 +271,23 @@ class SlackTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($hasFiles, $user->toArray()['user']['has_files']);
 
 
+    }
+
+    public function testGetAuthorizedRequestWithTokenString()
+    {
+        $request = $this->provider->getAuthenticatedRequest('get', 'api.test', 'mock_access_token');
+
+        $this->assertEquals('Bearer mock_access_token', $request->getHeader('Authorization')[0]);
+    }
+
+    public function testGetAuthorizedRequestWithAccessToken()
+    {
+        $accessToken = new AccessToken([
+            'access_token' => 'mock_access_token',
+        ]);
+
+        $request = $this->provider->getAuthenticatedRequest('get', 'api.test', $accessToken);
+
+        $this->assertEquals('Bearer mock_access_token', $request->getHeader('Authorization')[0]);
     }
 }
