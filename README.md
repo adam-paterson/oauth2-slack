@@ -17,7 +17,7 @@ This package provides Slack OAuth 2.0 support for the PHP League's [OAuth 2.0 Cl
 To install, use composer:
 
 ```bash
-$ composer require adam-paterson/oauth2-slack
+$ composer require chadhutchins/oauth2-slack
 ```
 ## Usage
 
