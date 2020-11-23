@@ -97,17 +97,22 @@ class SlackTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($token->getResourceOwnerId());
     }
 
+    /**
+     * @expectedException \AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException
+     */
     public function testCheckResponseThrowsIdentityProviderException()
     {
-        $method = self::getMethod('checkResponse');
-        $responseInterface = m::mock('Psr\Http\Message\ResponseInterface');
-        $data = ['ok' => false];
-        try {
-            $method->invoke($this->provider, $responseInterface, $data);
-        } catch (\Exception $e) {
-            $this->assertEquals(400, $e->getCode());
-            $this->assertEquals("Unknown error", $e->getMessage());
-        }
+        $response = m::mock('Psr\Http\Message\ResponseInterface');
+        $response->shouldReceive('getBody')->andReturn('{"ok": false, "error": "not_authed"}');
+        $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+        $response->shouldReceive('getStatusCode')->andReturn(401);
+
+        $client = m::mock('GuzzleHttp\ClientInterface');
+        $client->shouldReceive('send')->once()->andReturn($response);
+
+        $this->provider->setHttpClient($client);
+
+        $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
     }
 
     public function testGetAuthorizedUserTestUrl()

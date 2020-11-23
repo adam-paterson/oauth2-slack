@@ -6,6 +6,7 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
+use AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException;
 
 /**
  * Class Slack
@@ -23,7 +24,7 @@ class Slack extends AbstractProvider
      */
     public function getBaseAuthorizationUrl()
     {
-        return "https://slack.com/oauth/authorize";
+        return 'https://slack.com/oauth/v2/authorize';
     }
 
     /**
@@ -35,7 +36,7 @@ class Slack extends AbstractProvider
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return "https://slack.com/api/oauth.access";
+        return 'https://slack.com/api/oauth.v2.access';
     }
 
     /**
@@ -54,9 +55,7 @@ class Slack extends AbstractProvider
             'user'  => $authorizedUser->getId()
         ];
 
-        $url = 'https://slack.com/api/users.info?'.http_build_query($params);
-
-        return $url;
+        return 'https://slack.com/api/users.info?'.http_build_query($params);
     }
 
     /**
@@ -66,21 +65,23 @@ class Slack extends AbstractProvider
      */
     public function getAuthorizedUserTestUrl($token)
     {
-        return "https://slack.com/api/auth.test?token=".$token;
+        return 'https://slack.com/api/auth.test?token=' . $token;
     }
 
     /**
      * Checks a provider response for errors.
      *
-     * @throws IdentityProviderException
-     *
      * @param ResponseInterface $response
-     * @param array|string      $data     Parsed response data
+     * @param array|string      $data Parsed response data
      *
-     * @return void
+     * @return \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     * @throws \AdamPaterson\OAuth2\Client\Provider\Exception\SlackProviderException
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
+        if (isset($data['ok']) && $data['ok'] === false) {
+            return SlackProviderException::fromResponse($response, $data['error']);
+        }
     }
 
     /**
