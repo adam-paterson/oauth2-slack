@@ -1,3 +1,5 @@
+This is a fork of https://github.com/adam-paterson/oauth2-slack but includes support for Slack v2 API.
+
 # Slack Provider for OAuth 2.0 Client
 [![Latest Version](https://img.shields.io/github/release/adam-paterson/oauth2-slack.svg?style=flat-square)](https://github.com/adam-paterson/oauth2-slack/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
